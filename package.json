@@ -10,6 +10,7 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
+    "ramda": "^0.27.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-relay": "^0.0.0-experimental-895a6fe0",
@@ -42,6 +43,7 @@
     ]
   },
   "devDependencies": {
+    "@types/ramda": "^0.27.6",
     "@types/react-relay": "^7.0.8",
     "@types/relay-runtime": "^8.0.10",
     "babel-plugin-relay": "^9.1.0",
