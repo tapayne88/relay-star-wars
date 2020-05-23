@@ -42,6 +42,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-relay": "^7.0.8",
     "@types/relay-runtime": "^8.0.10",
     "babel-plugin-relay": "^9.1.0",
     "graphql": "^15.0.0",

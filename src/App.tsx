@@ -1,8 +1,16 @@
-import React from "react";
+import React, { FC } from "react";
 import logo from "./logo.svg";
 import "./App.css";
+import graphql from "babel-plugin-relay/macro";
+import { preloadQuery, usePreloadedQuery } from "react-relay/hooks";
+import { PreloadedQuery } from "react-relay/lib/relay-experimental/EntryPointTypes";
+import RelayEnvironment from "./RelayEnvironment";
+import { App_AllFilmsQuery } from "./__generated__/App_AllFilmsQuery.graphql";
 
-function App() {
+const App: FC<Props> = ({ preloadedQuery }) => {
+  const data = usePreloadedQuery(AllFilms, preloadedQuery);
+  console.log(data);
+
   return (
     <div className="App">
       <header className="App-header">
@@ -21,6 +29,29 @@ function App() {
       </header>
     </div>
   );
-}
+};
+
+type Props = {
+  preloadedQuery: PreloadedQuery<App_AllFilmsQuery>;
+};
+
+// Define a query
+const AllFilms = graphql`
+  query App_AllFilmsQuery {
+    allFilms {
+      edges {
+        node {
+          title
+        }
+      }
+    }
+  }
+`;
+
+export const preloadedQuery = preloadQuery<App_AllFilmsQuery>(
+  RelayEnvironment,
+  AllFilms,
+  {}
+);
 
 export default App;
