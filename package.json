@@ -22,7 +22,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,md,json}\""
+    "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,md,json}\"",
+    "relay:fetch_schema": "curl --location --output data/schema.graphql https://raw.githubusercontent.com/graphql/swapi-graphql/master/schema.graphql"
   },
   "eslintConfig": {
     "extends": "react-app"
