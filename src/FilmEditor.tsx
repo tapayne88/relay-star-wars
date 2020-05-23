@@ -1,12 +1,15 @@
 import React, { FC, useRef } from "react";
 import graphql from "babel-plugin-relay/macro";
+import { commitLocalUpdate } from "react-relay";
 import { useFragment } from "react-relay/hooks";
 import { FilmEditor_films$key } from "./__generated__/FilmEditor_films.graphql";
+import RelayEnvironment from "./RelayEnvironment";
 
 const FilmEditor: FC<Props> = ({ filmRefs }) => {
   const films = useFragment(
     graphql`
       fragment FilmEditor_films on Film @relay(plural: true) {
+        id
         title
         releaseDate
       }
@@ -16,7 +19,7 @@ const FilmEditor: FC<Props> = ({ filmRefs }) => {
   const titleRef = useRef<HTMLInputElement>(null!);
   const releaseDateRef = useRef<HTMLInputElement>(null!);
 
-  const { releaseDate, title } = films[0];
+  const { id, releaseDate, title } = films[0];
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -33,13 +36,15 @@ const FilmEditor: FC<Props> = ({ filmRefs }) => {
       />
 
       <button
-        onClick={() =>
-          console.log(
-            "I don't do anything yet!",
-            releaseDateRef.current.value,
-            titleRef.current.value
-          )
-        }
+        onClick={() => {
+          const update = {
+            id,
+            title: titleRef.current.value,
+            releaseDate: releaseDateRef.current.value,
+          };
+          console.log("committing update with", update);
+          commitUpdate(update);
+        }}
       >
         Update!
       </button>
@@ -50,5 +55,23 @@ const FilmEditor: FC<Props> = ({ filmRefs }) => {
 type Props = {
   filmRefs: FilmEditor_films$key;
 };
+
+const commitUpdate = ({
+  id,
+  title,
+  releaseDate,
+}: {
+  id: string;
+  title: string;
+  releaseDate: string;
+}) =>
+  commitLocalUpdate(RelayEnvironment, (store) => {
+    const filmRecord = store.get(id);
+
+    if (!filmRecord) return;
+
+    filmRecord.setValue(title, "title");
+    filmRecord.setValue(releaseDate, "releaseDate");
+  });
 
 export default FilmEditor;
