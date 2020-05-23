@@ -15,7 +15,7 @@
     "react-relay": "^0.0.0-experimental-895a6fe0",
     "react-scripts": "3.4.1",
     "relay-runtime": "^9.1.0",
-    "typescript": "~3.7.2"
+    "typescript": "^3.9.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -23,7 +23,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,md,json}\"",
-    "relay:fetch_schema": "curl --location --output data/schema.graphql https://raw.githubusercontent.com/graphql/swapi-graphql/master/schema.graphql"
+    "relay:fetch_schema": "curl --location --output data/schema.graphql https://raw.githubusercontent.com/graphql/swapi-graphql/master/schema.graphql",
+    "relay": "relay-compiler --src ./src --schema data/schema.graphql --language typescript --artifactDirectory ./src/__generated__"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -45,6 +46,7 @@
     "graphql": "^15.0.0",
     "prettier": "^2.0.5",
     "relay-compiler": "^9.1.0",
+    "relay-compiler-language-typescript": "^12.0.3",
     "relay-config": "^9.1.0"
   },
   "prettier": {}
