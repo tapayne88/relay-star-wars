@@ -11,16 +11,22 @@ const App: FC<Props> = ({ preloadedQuery }) => {
   const data = usePreloadedQuery(AllFilms, preloadedQuery);
   console.log(data);
 
-  if (!data.allFilms?.films || data.allFilms.films.length < 1) {
+  const filmRefs = data.allFilms?.films?.filter(isNotNullable);
+
+  if (!filmRefs || filmRefs.length < 1) {
     return <>No Films!</>;
   }
-
-  const filmRefs = data.allFilms.films.filter(isNotNullable);
 
   return (
     <>
       <h1>Star Wars GraphQL</h1>
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div
+        style={{
+          margin: "0 20px",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
         <FilmList filmRefs={filmRefs} />
         <FilmEditor filmRefs={filmRefs} />
       </div>
