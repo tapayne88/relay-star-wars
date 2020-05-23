@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import graphql from "babel-plugin-relay/macro";
 import { useFragment } from "react-relay/hooks";
-import { sort } from "ramda";
+import { sortByReleaseDateDesc } from "./sorting";
 import { FilmList_films$key } from "./__generated__/FilmList_films.graphql";
 import Film from "./Film";
 
@@ -31,13 +31,5 @@ const FilmList: FC<Props> = ({ filmRefs }) => {
 type Props = {
   filmRefs: FilmList_films$key;
 };
-
-const parseDate = (date: string | null): number =>
-  date !== null ? new Date(date).valueOf() : Number.MIN_VALUE;
-
-const sortByReleaseDateDesc = <T extends { releaseDate: string | null }>(
-  arr: readonly T[]
-): readonly T[] =>
-  sort((a, b) => parseDate(b.releaseDate) - parseDate(a.releaseDate), arr);
 
 export default FilmList;

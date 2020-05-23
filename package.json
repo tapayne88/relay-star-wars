@@ -25,7 +25,8 @@
     "eject": "react-scripts eject",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,md,json}\"",
     "relay:fetch_schema": "curl --location --output data/schema.graphql https://raw.githubusercontent.com/graphql/swapi-graphql/master/schema.graphql",
-    "relay": "relay-compiler --src ./src --schema data/schema.graphql --language typescript --artifactDirectory ./src/__generated__"
+    "relay": "relay-compiler --src ./src --schema data/schema.graphql --language typescript --artifactDirectory ./src/__generated__",
+    "tsc": "tsc --noEmit"
   },
   "eslintConfig": {
     "extends": "react-app"

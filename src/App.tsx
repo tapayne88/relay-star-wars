@@ -5,6 +5,7 @@ import { PreloadedQuery } from "react-relay/lib/relay-experimental/EntryPointTyp
 import RelayEnvironment from "./RelayEnvironment";
 import { App_AllFilmsQuery } from "./__generated__/App_AllFilmsQuery.graphql";
 import FilmList from "./FilmList";
+import FilmEditor from "./FilmEditor";
 
 const App: FC<Props> = ({ preloadedQuery }) => {
   const data = usePreloadedQuery(AllFilms, preloadedQuery);
@@ -17,10 +18,13 @@ const App: FC<Props> = ({ preloadedQuery }) => {
   const filmRefs = data.allFilms.films.filter(isNotNullable);
 
   return (
-    <div>
+    <>
       <h1>Star Wars GraphQL</h1>
-      <FilmList filmRefs={filmRefs} />
-    </div>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <FilmList filmRefs={filmRefs} />
+        <FilmEditor filmRefs={filmRefs} />
+      </div>
+    </>
   );
 };
 
@@ -37,6 +41,7 @@ const AllFilms = graphql`
   query App_AllFilmsQuery {
     allFilms {
       films {
+        ...FilmEditor_films
         ...FilmList_films
       }
     }
