@@ -1,32 +1,25 @@
 import React, { FC } from "react";
-import logo from "./logo.svg";
-import "./App.css";
 import graphql from "babel-plugin-relay/macro";
 import { preloadQuery, usePreloadedQuery } from "react-relay/hooks";
 import { PreloadedQuery } from "react-relay/lib/relay-experimental/EntryPointTypes";
 import RelayEnvironment from "./RelayEnvironment";
 import { App_AllFilmsQuery } from "./__generated__/App_AllFilmsQuery.graphql";
+import FilmList from "./FilmList";
 
 const App: FC<Props> = ({ preloadedQuery }) => {
   const data = usePreloadedQuery(AllFilms, preloadedQuery);
   console.log(data);
 
+  if (!data.allFilms?.films || data.allFilms.films.length < 1) {
+    return <>No Films!</>;
+  }
+
+  const filmRefs = data.allFilms.films.filter(isNotNullable);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Star Wars GraphQL</h1>
+      <FilmList filmRefs={filmRefs} />
     </div>
   );
 };
@@ -35,14 +28,16 @@ type Props = {
   preloadedQuery: PreloadedQuery<App_AllFilmsQuery>;
 };
 
+const isNotNullable = <T extends unknown>(
+  value: T | null | undefined
+): value is T => typeof value !== "undefined" && value !== null;
+
 // Define a query
 const AllFilms = graphql`
   query App_AllFilmsQuery {
     allFilms {
-      edges {
-        node {
-          title
-        }
+      films {
+        ...FilmList_films
       }
     }
   }
