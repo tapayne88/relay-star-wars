@@ -4,6 +4,7 @@ import { commitLocalUpdate } from "react-relay";
 import { useFragment } from "react-relay/hooks";
 import { FilmEditor_films$key } from "./__generated__/FilmEditor_films.graphql";
 import RelayEnvironment from "./RelayEnvironment";
+import { useFilmSelectorRead } from "./FilmSelector";
 
 const FilmEditor: FC<Props> = ({ filmRefs }) => {
   const films = useFragment(
@@ -16,22 +17,26 @@ const FilmEditor: FC<Props> = ({ filmRefs }) => {
     `,
     filmRefs
   );
+  const selected = useFilmSelectorRead();
+  const film = films.find(({ id }) => id === selected)!;
+
   const titleRef = useRef<HTMLInputElement>(null!);
   const releaseDateRef = useRef<HTMLInputElement>(null!);
 
-  const { id, releaseDate, title } = films[0];
+  const { id, releaseDate, title } = film;
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <h2>Selected Film</h2>
 
       <label htmlFor="title">Title</label>
-      <input name="title" defaultValue={title!} ref={titleRef} />
+      <input name="title" defaultValue={title!} key={title!} ref={titleRef} />
 
       <label htmlFor="releaseDate">Release Date</label>
       <input
         name="releaseDate"
         defaultValue={releaseDate!}
+        key={releaseDate!}
         ref={releaseDateRef}
       />
 
