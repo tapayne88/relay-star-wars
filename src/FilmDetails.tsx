@@ -5,6 +5,7 @@ import { FilmDetails_filmQuery } from "./__generated__/FilmDetails_filmQuery.gra
 import { useFilmSelectorRead } from "./FilmSelector";
 import Species from "./Species";
 import { isNotNullable } from "./filtering";
+import FilmDetailsReleaseDate from "./FilmDetailsReleaseDate";
 
 const FilmDetails: FC = () => {
   const selected = useFilmSelectorRead();
@@ -12,10 +13,10 @@ const FilmDetails: FC = () => {
     graphql`
       query FilmDetails_filmQuery($filmId: ID!) {
         film(id: $filmId) {
+          ...FilmDetailsReleaseDate_film
           title
           episodeID
           director
-          releaseDate
           speciesConnection {
             species {
               ...Species_species
@@ -33,10 +34,9 @@ const FilmDetails: FC = () => {
     return <>:shrug:</>;
   }
 
-  const { title, episodeID, director, releaseDate, speciesConnection } = film;
+  const { title, episodeID, director, speciesConnection } = film;
 
   const species = speciesConnection?.species?.filter(isNotNullable);
-  console.log(speciesConnection);
 
   return (
     <dl>
@@ -49,8 +49,7 @@ const FilmDetails: FC = () => {
       <dt>Director</dt>
       <dd>{director}</dd>
 
-      <dt>Release Date</dt>
-      <dd>{releaseDate}</dd>
+      <FilmDetailsReleaseDate filmRef={film} />
 
       {species && <Species speciesRefs={species} />}
     </dl>
