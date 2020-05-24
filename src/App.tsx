@@ -10,7 +10,8 @@ import FilmEditor from "./FilmEditor";
 import FilmDetails from "./FilmDetails";
 import Accordion from "./Accordion";
 import { isNotNullable } from "./filtering";
-import FilmListFilter from "./FilmListFilter";
+import FilmListFilter, { FilterSpecieProvider } from "./FilmListFilter";
+import { FragmentRefs } from "relay-runtime";
 
 const { Suspense } = React;
 
@@ -24,10 +25,14 @@ const App: FC<Props> = ({ preloadedQuery }) => {
     return <>No Films!</>;
   }
 
-  const speciesRefs = filmRefs
-    .map(({ speciesConnection }) => speciesConnection?.species)
-    .flat()
-    .filter(isNotNullable);
+  const speciesRefs = filmRefs.reduce((collection, { speciesConnection }) => {
+    const uniqueSpecies: SpeciesRef =
+      speciesConnection?.species?.filter((specie): specie is SpecieRef =>
+        specie && !collection.find((s) => s.id === specie.id) ? true : false
+      ) || [];
+    return [...collection, ...uniqueSpecies];
+  }, [] as SpeciesRef);
+  console.log(speciesRefs);
 
   const first = filmRefs[0];
 
@@ -35,22 +40,24 @@ const App: FC<Props> = ({ preloadedQuery }) => {
     <>
       <h1>Star Wars GraphQL</h1>
       <FilmSelectorProvider initialValue={first.id}>
-        <FilmListFilter speciesRefs={speciesRefs} />
-        <div
-          style={{
-            margin: "0 20px",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <FilmList filmRefs={filmRefs} />
-          <FilmEditor filmRefs={filmRefs} />
-        </div>
-        <Accordion header={<h2>Film Details</h2>}>
-          <Suspense fallback={"Loading..."}>
-            <FilmDetails />
-          </Suspense>
-        </Accordion>
+        <FilterSpecieProvider>
+          <FilmListFilter speciesRefs={speciesRefs} />
+          <div
+            style={{
+              margin: "0 20px",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <FilmList filmRefs={filmRefs} />
+            <FilmEditor filmRefs={filmRefs} />
+          </div>
+          <Accordion header={<h2>Film Details</h2>}>
+            <Suspense fallback={"Loading..."}>
+              <FilmDetails />
+            </Suspense>
+          </Accordion>
+        </FilterSpecieProvider>
       </FilmSelectorProvider>
     </>
   );
@@ -59,6 +66,12 @@ const App: FC<Props> = ({ preloadedQuery }) => {
 type Props = {
   preloadedQuery: PreloadedQuery<App_AllFilmsQuery>;
 };
+
+type SpecieRef = {
+  id: string;
+  " $fragmentRefs": FragmentRefs<"FilmListFilter_species">;
+};
+type SpeciesRef = ReadonlyArray<SpecieRef>;
 
 // Define a query
 const AllFilms = graphql`
@@ -70,6 +83,7 @@ const AllFilms = graphql`
         ...FilmList_films
         speciesConnection {
           species {
+            id
             ...FilmListFilter_species
           }
         }
