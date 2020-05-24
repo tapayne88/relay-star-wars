@@ -3,6 +3,8 @@ import graphql from "babel-plugin-relay/macro";
 import { useLazyLoadQuery } from "react-relay/hooks";
 import { FilmDetails_filmQuery } from "./__generated__/FilmDetails_filmQuery.graphql";
 import { useFilmSelectorRead } from "./FilmSelector";
+import Species from "./Species";
+import { isNotNullable } from "./filtering";
 
 const FilmDetails: FC = () => {
   const selected = useFilmSelectorRead();
@@ -14,6 +16,11 @@ const FilmDetails: FC = () => {
           episodeID
           director
           releaseDate
+          speciesConnection {
+            species {
+              ...Species_species
+            }
+          }
         }
       }
     `,
@@ -26,7 +33,10 @@ const FilmDetails: FC = () => {
     return <>:shrug:</>;
   }
 
-  const { title, episodeID, director, releaseDate } = film;
+  const { title, episodeID, director, releaseDate, speciesConnection } = film;
+
+  const species = speciesConnection?.species?.filter(isNotNullable);
+  console.log(speciesConnection);
 
   return (
     <dl>
@@ -41,6 +51,8 @@ const FilmDetails: FC = () => {
 
       <dt>Release Date</dt>
       <dd>{releaseDate}</dd>
+
+      {species && <Species speciesRefs={species} />}
     </dl>
   );
 };

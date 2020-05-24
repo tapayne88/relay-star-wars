@@ -9,6 +9,7 @@ import FilmList from "./FilmList";
 import FilmEditor from "./FilmEditor";
 import FilmDetails from "./FilmDetails";
 import Accordion from "./Accordion";
+import { isNotNullable } from "./filtering";
 
 const { Suspense } = React;
 
@@ -38,7 +39,7 @@ const App: FC<Props> = ({ preloadedQuery }) => {
           <FilmList filmRefs={filmRefs} />
           <FilmEditor filmRefs={filmRefs} />
         </div>
-        <Accordion header="Film Details">
+        <Accordion header={<h2>Film Details</h2>}>
           <Suspense fallback={"Loading..."}>
             <FilmDetails />
           </Suspense>
@@ -51,10 +52,6 @@ const App: FC<Props> = ({ preloadedQuery }) => {
 type Props = {
   preloadedQuery: PreloadedQuery<App_AllFilmsQuery>;
 };
-
-const isNotNullable = <T extends unknown>(
-  value: T | null | undefined
-): value is T => typeof value !== "undefined" && value !== null;
 
 // Define a query
 const AllFilms = graphql`
