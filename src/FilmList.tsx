@@ -5,6 +5,8 @@ import { sortByReleaseDateDesc } from "./sorting";
 import { FilmList_films$key } from "./__generated__/FilmList_films.graphql";
 import Film from "./Film";
 import FilmListItem from "./FilmListItem";
+import { useFilterSpecieRead } from "./FilmListFilter";
+import { filmHasSpecie } from "./filtering";
 
 const FilmList: FC<Props> = ({ filmRefs }) => {
   const films = useFragment(
@@ -13,14 +15,24 @@ const FilmList: FC<Props> = ({ filmRefs }) => {
         id
         releaseDate
         ...Film_film
+        speciesConnection {
+          species {
+            name
+          }
+        }
       }
     `,
     filmRefs
   );
+  const specieFilter = useFilterSpecieRead();
+
+  const filmList = specieFilter
+    ? films.filter(filmHasSpecie(specieFilter))
+    : films;
 
   return (
     <ul>
-      {sortByReleaseDateDesc(films).map((film) => (
+      {sortByReleaseDateDesc(filmList).map((film) => (
         <FilmListItem key={film.id} id={film.id}>
           <Film filmRef={film} />
         </FilmListItem>
