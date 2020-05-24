@@ -16,11 +16,7 @@ const Film: FC<Props> = ({ filmRef }) => {
 
   return (
     <div>
-      <dt>Title</dt>
-      <dd>{title}</dd>
-
-      <dt>Release Date</dt>
-      <dd>{releaseDate}</dd>
+      {releaseDate} <strong>{title}</strong>
     </div>
   );
 };

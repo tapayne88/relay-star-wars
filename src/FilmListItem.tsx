@@ -7,7 +7,9 @@ const FilmListItem: FC<Props> = ({ id, children }) => {
 
   return (
     <li
-      style={selected === id ? { border: "1px solid red" } : {}}
+      style={
+        selected === id ? { border: "1px solid red", ...styling } : styling
+      }
       onClick={() => setSelected(id)}
     >
       {children}
@@ -18,5 +20,7 @@ const FilmListItem: FC<Props> = ({ id, children }) => {
 type Props = {
   id: string;
 };
+
+const styling = { margin: "8px 0", cursor: "pointer" };
 
 export default FilmListItem;

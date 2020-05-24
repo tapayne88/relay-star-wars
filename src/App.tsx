@@ -10,6 +10,8 @@ import FilmEditor from "./FilmEditor";
 import FilmDetails from "./FilmDetails";
 import Accordion from "./Accordion";
 
+const { Suspense } = React;
+
 const App: FC<Props> = ({ preloadedQuery }) => {
   const data = usePreloadedQuery(AllFilms, preloadedQuery);
   console.log(data);
@@ -37,7 +39,9 @@ const App: FC<Props> = ({ preloadedQuery }) => {
           <FilmEditor filmRefs={filmRefs} />
         </div>
         <Accordion header="Film Details">
-          <FilmDetails />
+          <Suspense fallback={"Loading..."}>
+            <FilmDetails />
+          </Suspense>
         </Accordion>
       </FilmSelectorProvider>
     </>
