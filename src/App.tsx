@@ -10,6 +10,7 @@ import FilmEditor from "./FilmEditor";
 import FilmDetails from "./FilmDetails";
 import Accordion from "./Accordion";
 import { isNotNullable } from "./filtering";
+import FilmListFilter from "./FilmListFilter";
 
 const { Suspense } = React;
 
@@ -23,12 +24,18 @@ const App: FC<Props> = ({ preloadedQuery }) => {
     return <>No Films!</>;
   }
 
+  const speciesRefs = filmRefs
+    .map(({ speciesConnection }) => speciesConnection?.species)
+    .flat()
+    .filter(isNotNullable);
+
   const first = filmRefs[0];
 
   return (
     <>
       <h1>Star Wars GraphQL</h1>
       <FilmSelectorProvider initialValue={first.id}>
+        <FilmListFilter speciesRefs={speciesRefs} />
         <div
           style={{
             margin: "0 20px",
@@ -61,6 +68,11 @@ const AllFilms = graphql`
         id
         ...FilmEditor_films
         ...FilmList_films
+        speciesConnection {
+          species {
+            ...FilmListFilter_species
+          }
+        }
       }
     }
   }
