@@ -7,6 +7,8 @@ import { App_AllFilmsQuery } from "./__generated__/App_AllFilmsQuery.graphql";
 import FilmSelectorProvider from "./FilmSelector";
 import FilmList from "./FilmList";
 import FilmEditor from "./FilmEditor";
+import FilmDetails from "./FilmDetails";
+import Accordion from "./Accordion";
 
 const App: FC<Props> = ({ preloadedQuery }) => {
   const data = usePreloadedQuery(AllFilms, preloadedQuery);
@@ -23,18 +25,21 @@ const App: FC<Props> = ({ preloadedQuery }) => {
   return (
     <>
       <h1>Star Wars GraphQL</h1>
-      <div
-        style={{
-          margin: "0 20px",
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        <FilmSelectorProvider initialValue={first.id}>
+      <FilmSelectorProvider initialValue={first.id}>
+        <div
+          style={{
+            margin: "0 20px",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
           <FilmList filmRefs={filmRefs} />
           <FilmEditor filmRefs={filmRefs} />
-        </FilmSelectorProvider>
-      </div>
+        </div>
+        <Accordion header="Film Details">
+          <FilmDetails />
+        </Accordion>
+      </FilmSelectorProvider>
     </>
   );
 };
