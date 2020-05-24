@@ -2,6 +2,7 @@ import React, { FC } from "react";
 import graphql from "babel-plugin-relay/macro";
 import { useFragment } from "react-relay/hooks";
 import { Species_species$key } from "./__generated__/Species_species.graphql";
+import { sortByNameAsc } from "./sorting";
 
 const Species: FC<Props> = ({ speciesRefs }) => {
   const species = useFragment(
@@ -18,7 +19,7 @@ const Species: FC<Props> = ({ speciesRefs }) => {
     <>
       <h3>Species</h3>
       <ul>
-        {species.map(({ id, name }) => (
+        {sortByNameAsc(species).map(({ id, name }) => (
           <li key={id}>{name}</li>
         ))}
       </ul>

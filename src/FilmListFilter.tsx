@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, FC } from "react";
 import graphql from "babel-plugin-relay/macro";
 import { useFragment } from "react-relay/hooks";
 import { FilmListFilter_species$key } from "./__generated__/FilmListFilter_species.graphql";
+import { sortByNameAsc } from "./sorting";
 
 const FilterSpecieRead = createContext<string | null | undefined>(undefined);
 const FilterSpecieWrite = createContext<((specie: string) => void) | undefined>(
@@ -65,7 +66,7 @@ const FilmListFilter: FC<Props> = ({ speciesRefs }) => {
         onChange={(event) => setSpecie(event.target.value)}
       >
         <option value="">Choose filter specie</option>
-        {species.map(({ name }) => (
+        {sortByNameAsc(species).map(({ name }) => (
           <option key={name!} value={name!}>
             {name}
           </option>
