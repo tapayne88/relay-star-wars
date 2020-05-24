@@ -4,7 +4,7 @@ import { useFragment } from "react-relay/hooks";
 import { sortByReleaseDateDesc } from "./sorting";
 import { FilmList_films$key } from "./__generated__/FilmList_films.graphql";
 import Film from "./Film";
-import { useFilmSelectorRead, useFilmSelectorWrite } from "./FilmSelector";
+import FilmListItem from "./FilmListItem";
 
 const FilmList: FC<Props> = ({ filmRefs }) => {
   const films = useFragment(
@@ -17,19 +17,13 @@ const FilmList: FC<Props> = ({ filmRefs }) => {
     `,
     filmRefs
   );
-  const selected = useFilmSelectorRead();
-  const setSelected = useFilmSelectorWrite();
 
   return (
     <ul>
       {sortByReleaseDateDesc(films).map((film) => (
-        <li
-          key={film.id}
-          style={selected === film.id ? { border: "1px solid red" } : {}}
-          onClick={() => setSelected(film.id)}
-        >
+        <FilmListItem key={film.id} id={film.id}>
           <Film filmRef={film} />
-        </li>
+        </FilmListItem>
       ))}
     </ul>
   );
