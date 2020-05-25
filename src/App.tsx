@@ -4,19 +4,20 @@ import { preloadQuery, usePreloadedQuery } from "react-relay/hooks";
 import { PreloadedQuery } from "react-relay/lib/relay-experimental/EntryPointTypes";
 import RelayEnvironment from "./RelayEnvironment";
 import { App_AllFilmsQuery } from "./__generated__/App_AllFilmsQuery.graphql";
-import FilmSelectorProvider from "./FilmSelector";
+import { useFilmSelectorRead } from "./FilmSelector";
 import FilmList from "./FilmList";
 import FilmEditor from "./FilmEditor";
 import FilmDetails from "./FilmDetails";
 import Accordion from "./Accordion";
 import { isNotNullable } from "./filtering";
-import FilmListFilter, { FilterSpecieProvider } from "./FilmListFilter";
+import FilmListFilter from "./FilmListFilter";
 import { FragmentRefs } from "relay-runtime";
 
 const { Suspense } = React;
 
 const App: FC<Props> = ({ preloadedQuery }) => {
   const data = usePreloadedQuery(AllFilms, preloadedQuery);
+  const selectedFilm = useFilmSelectorRead();
 
   const filmRefs = data.allFilms?.films?.filter(isNotNullable);
 
@@ -32,31 +33,25 @@ const App: FC<Props> = ({ preloadedQuery }) => {
     return [...collection, ...uniqueSpecies];
   }, [] as SpeciesRef);
 
-  const first = filmRefs[0];
-
   return (
     <>
       <h1>Star Wars GraphQL</h1>
-      <FilmSelectorProvider initialValue={first.id}>
-        <FilterSpecieProvider>
-          <FilmListFilter speciesRefs={speciesRefs} />
-          <div
-            style={{
-              margin: "0 20px",
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <FilmList filmRefs={filmRefs} />
-            <FilmEditor filmRefs={filmRefs} />
-          </div>
-          <Accordion header={<h2>Film Details</h2>}>
-            <Suspense fallback={"Loading..."}>
-              <FilmDetails />
-            </Suspense>
-          </Accordion>
-        </FilterSpecieProvider>
-      </FilmSelectorProvider>
+      <FilmListFilter speciesRefs={speciesRefs} />
+      <div
+        style={{
+          margin: "0 20px",
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        <FilmList filmRefs={filmRefs} />
+        <FilmEditor filmRefs={filmRefs} />
+      </div>
+      <Accordion header={<h2>Film Details</h2>}>
+        <Suspense fallback={"Loading..."}>
+          {selectedFilm ? <FilmDetails /> : <>No film selected</>}
+        </Suspense>
+      </Accordion>
     </>
   );
 };

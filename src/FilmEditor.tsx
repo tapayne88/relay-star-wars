@@ -18,40 +18,49 @@ const FilmEditor: FC<Props> = ({ filmRefs }) => {
     filmRefs
   );
   const selected = useFilmSelectorRead();
-  const film = films.find(({ id }) => id === selected)!;
-
   const titleRef = useRef<HTMLInputElement>(null!);
   const releaseDateRef = useRef<HTMLInputElement>(null!);
 
-  const { id, releaseDate, title } = film;
+  const film = films.find(({ id }) => id === selected)!;
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <h2>Film Editor</h2>
 
-      <label htmlFor="title">Title</label>
-      <input name="title" defaultValue={title!} key={title!} ref={titleRef} />
+      {!film ? (
+        <>Please select a film</>
+      ) : (
+        <>
+          <label htmlFor="title">Title</label>
+          <input
+            name="title"
+            defaultValue={film.title!}
+            key={film.title!}
+            ref={titleRef}
+          />
 
-      <label htmlFor="releaseDate">Release Date</label>
-      <input
-        name="releaseDate"
-        defaultValue={releaseDate!}
-        key={releaseDate!}
-        ref={releaseDateRef}
-      />
+          <label htmlFor="releaseDate">Release Date</label>
+          <input
+            name="releaseDate"
+            defaultValue={film.releaseDate!}
+            key={film.releaseDate!}
+            ref={releaseDateRef}
+          />
 
-      <button
-        onClick={() => {
-          const update = {
-            id,
-            title: titleRef.current.value,
-            releaseDate: releaseDateRef.current.value,
-          };
-          commitUpdate(update);
-        }}
-      >
-        Update
-      </button>
+          <button
+            onClick={() => {
+              const update = {
+                id: film.id,
+                title: titleRef.current.value,
+                releaseDate: releaseDateRef.current.value,
+              };
+              commitUpdate(update);
+            }}
+          >
+            Update
+          </button>
+        </>
+      )}
     </div>
   );
 };

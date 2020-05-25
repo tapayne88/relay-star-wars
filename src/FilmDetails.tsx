@@ -8,7 +8,7 @@ import { isNotNullable } from "./filtering";
 import FilmDetailsReleaseDate from "./FilmDetailsReleaseDate";
 
 const FilmDetails: FC = () => {
-  const selected = useFilmSelectorRead();
+  const selected = useFilmSelectorRead()!;
   const data = useLazyLoadQuery<FilmDetails_filmQuery>(
     graphql`
       query FilmDetails_filmQuery($filmId: ID!) {

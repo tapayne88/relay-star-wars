@@ -5,15 +5,21 @@ import App, { preloadedQuery } from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { RelayEnvironmentProvider } from "react-relay/hooks";
 import RelayEnvironment from "./RelayEnvironment";
+import FilmSelectorProvider from "./FilmSelector";
+import { FilterSpecieProvider } from "./FilmListFilter";
 
 const { Suspense } = React;
 
 ReactDOM.render(
   <React.StrictMode>
     <RelayEnvironmentProvider environment={RelayEnvironment}>
-      <Suspense fallback={"Loading..."}>
-        <App preloadedQuery={preloadedQuery} />
-      </Suspense>
+      <FilmSelectorProvider>
+        <FilterSpecieProvider>
+          <Suspense fallback={"Loading..."}>
+            <App preloadedQuery={preloadedQuery} />
+          </Suspense>
+        </FilterSpecieProvider>
+      </FilmSelectorProvider>
     </RelayEnvironmentProvider>
   </React.StrictMode>,
   document.getElementById("root")
