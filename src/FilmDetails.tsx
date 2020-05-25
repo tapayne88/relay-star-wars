@@ -1,18 +1,28 @@
 import React, { FC } from "react";
 import graphql from "babel-plugin-relay/macro";
-import { useLazyLoadQuery } from "react-relay/hooks";
+import {
+  useLazyLoadQuery,
+  useRelayEnvironment,
+  preloadQuery,
+} from "react-relay/hooks";
 import { FilmDetails_filmQuery } from "./__generated__/FilmDetails_filmQuery.graphql";
 import { useFilmSelectorRead } from "./FilmSelector";
 import Species from "./Species";
 import { isNotNullable } from "./filtering";
 import FilmDetailsReleaseDate from "./FilmDetailsReleaseDate";
 import Accordion from "./Accordion";
-import Planets from "./Planets";
+import preloadPlanets, {
+  Planets_filmPlanetsQuery,
+} from "./__generated__/Planets_filmPlanetsQuery.graphql";
+
+const Planets = React.lazy(() => import("./Planets"));
 
 const { Suspense } = React;
 
 const FilmDetails: FC = () => {
   const selected = useFilmSelectorRead()!;
+  const environment = useRelayEnvironment();
+
   const data = useLazyLoadQuery<FilmDetails_filmQuery>(
     graphql`
       query FilmDetails_filmQuery($filmId: ID!) {
@@ -57,10 +67,19 @@ const FilmDetails: FC = () => {
 
       {species && <Species speciesRefs={species} />}
 
-      <Accordion header={<h3>Planets</h3>}>
-        <Suspense fallback={"Loading..."}>
-          <Planets />
-        </Suspense>
+      <Accordion<Planets_filmPlanetsQuery>
+        prepare={() =>
+          preloadQuery(environment, preloadPlanets, { filmId: selected })
+        }
+        header={<h3>Planets</h3>}
+      >
+        {(preloadedQuery) => (
+          <>
+            <Suspense fallback={"Loading..."}>
+              <Planets preloadedQuery={preloadedQuery} />
+            </Suspense>
+          </>
+        )}
       </Accordion>
     </dl>
   );
