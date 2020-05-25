@@ -1,5 +1,10 @@
 import React, { FC } from "react";
-import { useFilmSortWrite } from "./FilmSort";
+import {
+  useFilmSortWrite,
+  filmSorts,
+  defaultSort,
+  FilmSortContext,
+} from "./FilmSort";
 
 const FilmListSort: FC = () => {
   const setSort = useFilmSortWrite();
@@ -8,10 +13,10 @@ const FilmListSort: FC = () => {
     <div>
       <h4>Sort Films</h4>
       <select
-        defaultValue={sortOptions[0]}
-        onChange={(event) => setSort(event.target.value)}
+        defaultValue={defaultSort}
+        onChange={(event) => setSort(event.target.value as FilmSortContext)}
       >
-        {sortOptions.map((name) => (
+        {filmSorts.map((name) => (
           <option key={name} value={name}>
             {name}
           </option>
@@ -20,7 +25,5 @@ const FilmListSort: FC = () => {
     </div>
   );
 };
-
-const sortOptions = ["name", "releaseDate"] as const;
 
 export default FilmListSort;

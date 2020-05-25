@@ -45,3 +45,19 @@ export const sortByNameAsc = <T extends { name: string | null }>(
     }
     return compareStringsAsc(a.name, b.name);
   }, arr);
+
+export const sortByTitleAsc = <T extends { title: string | null }>(
+  arr: readonly T[]
+): readonly T[] =>
+  sort((a, b) => {
+    if (a.title === null && b.title === null) {
+      return 0;
+    }
+    if (a.title === null) {
+      return 1;
+    }
+    if (b.title === null) {
+      return -1;
+    }
+    return compareStringsAsc(a.title, b.title);
+  }, arr);

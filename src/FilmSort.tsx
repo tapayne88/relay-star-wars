@@ -1,15 +1,21 @@
 import React, { createContext, useState, useContext, FC } from "react";
 
-const FilmSortRead = createContext<string | null | undefined>(undefined);
-const FilmSortWrite = createContext<((sort: string) => void) | undefined>(
-  undefined
-);
+type ValuesOf<T> = T extends ReadonlyArray<infer U> ? U : never;
+export const filmSorts = ["title", "releaseDate"] as const;
+export const defaultSort = filmSorts[0];
+
+export type FilmSortContext = ValuesOf<typeof filmSorts>;
+
+const FilmSortRead = createContext<FilmSortContext | undefined>(undefined);
+const FilmSortWrite = createContext<
+  ((sort: FilmSortContext) => void) | undefined
+>(undefined);
 
 const FilmSortProvider: FC = ({ children }) => {
-  const [selected, setSelected] = useState<string | null>(null);
+  const [selected, setSelected] = useState<FilmSortContext>(defaultSort);
 
-  const setSort = (sort: string) => {
-    sort !== "" ? setSelected(sort) : setSelected(null);
+  const setSort = (sort: FilmSortContext) => {
+    setSelected(sort);
   };
 
   return (

@@ -1,20 +1,19 @@
 import React, { FC } from "react";
 import graphql from "babel-plugin-relay/macro";
 import { useFragment } from "react-relay/hooks";
-import { sortByReleaseDateDesc } from "./sorting";
 import { FilmList_films$key } from "./__generated__/FilmList_films.graphql";
-import Film from "./Film";
-import FilmListItem from "./FilmListItem";
 import { filmHasSpecie } from "./filtering";
 import { useFilterSpecieRead } from "./SpeciesFilter";
+import FilmListByTitle from "./FilmListByTitle";
+import FilmListByReleaseDate from "./FilmListByReleaseDate";
+import { useFilmSortRead } from "./FilmSort";
 
 const FilmList: FC<Props> = ({ filmRefs }) => {
   const films = useFragment(
     graphql`
       fragment FilmList_films on Film @relay(plural: true) {
-        id
-        releaseDate
-        ...Film_film
+        ...FilmListByTitle_films
+        ...FilmListByReleaseDate_films
         speciesConnection {
           species {
             name
@@ -25,20 +24,17 @@ const FilmList: FC<Props> = ({ filmRefs }) => {
     filmRefs
   );
   const specieFilter = useFilterSpecieRead();
+  const sort = useFilmSortRead();
 
   const filmList = specieFilter
     ? films.filter(filmHasSpecie(specieFilter))
     : films;
 
-  return (
-    <ul>
-      {sortByReleaseDateDesc(filmList).map((film) => (
-        <FilmListItem key={film.id} id={film.id}>
-          <Film filmRef={film} />
-        </FilmListItem>
-      ))}
-    </ul>
-  );
+  if (sort === "title") {
+    return <FilmListByTitle filmRefs={filmList} />;
+  }
+
+  return <FilmListByReleaseDate filmRefs={filmList} />;
 };
 
 type Props = {
