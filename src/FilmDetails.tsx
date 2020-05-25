@@ -1,9 +1,9 @@
 import React, { FC } from "react";
 import graphql from "babel-plugin-relay/macro";
 import {
-  useLazyLoadQuery,
   useRelayEnvironment,
   preloadQuery,
+  usePreloadedQuery,
 } from "react-relay/hooks";
 import { FilmDetails_filmQuery } from "./__generated__/FilmDetails_filmQuery.graphql";
 import { useFilmSelectorRead } from "./FilmSelector";
@@ -14,16 +14,17 @@ import Accordion from "./Accordion";
 import preloadPlanets, {
   Planets_filmPlanetsQuery,
 } from "./__generated__/Planets_filmPlanetsQuery.graphql";
+import { PreloadedQuery } from "react-relay/lib/relay-experimental/EntryPointTypes";
 
 const Planets = React.lazy(() => import("./Planets"));
 
 const { Suspense } = React;
 
-const FilmDetails: FC = () => {
+const FilmDetails: FC<Props> = ({ preloadedQuery }) => {
   const selected = useFilmSelectorRead()!;
   const environment = useRelayEnvironment();
 
-  const data = useLazyLoadQuery<FilmDetails_filmQuery>(
+  const data = usePreloadedQuery(
     graphql`
       query FilmDetails_filmQuery($filmId: ID!) {
         film(id: $filmId) {
@@ -39,7 +40,7 @@ const FilmDetails: FC = () => {
         }
       }
     `,
-    { filmId: selected }
+    preloadedQuery
   );
 
   const film = data?.film;
@@ -83,6 +84,10 @@ const FilmDetails: FC = () => {
       </Accordion>
     </dl>
   );
+};
+
+type Props = {
+  preloadedQuery: PreloadedQuery<FilmDetails_filmQuery>;
 };
 
 export default FilmDetails;

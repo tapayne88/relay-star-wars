@@ -1,6 +1,10 @@
 import React, { FC } from "react";
 import graphql from "babel-plugin-relay/macro";
-import { usePreloadedQuery } from "react-relay/hooks";
+import {
+  usePreloadedQuery,
+  useRelayEnvironment,
+  preloadQuery,
+} from "react-relay/hooks";
 import { FragmentRefs } from "relay-runtime";
 import { PreloadedQuery } from "react-relay/lib/relay-experimental/EntryPointTypes";
 import { App_AllFilmsQuery } from "./__generated__/App_AllFilmsQuery.graphql";
@@ -10,12 +14,16 @@ import FilmList from "./FilmList";
 import FilmEditor from "./FilmEditor";
 import FilmListFilter from "./FilmListFilter";
 import FilmListSort from "./FilmListSort";
+import FilmDetailsQuery, {
+  FilmDetails_filmQuery,
+} from "./__generated__/FilmDetails_filmQuery.graphql";
 
 const FilmDetails = React.lazy(() => import("./FilmDetails"));
 
 const { Suspense } = React;
 
 const App: FC<Props> = ({ preloadedQuery }) => {
+  const environment = useRelayEnvironment();
   const data = usePreloadedQuery(
     graphql`
       query App_AllFilmsQuery {
@@ -73,7 +81,13 @@ const App: FC<Props> = ({ preloadedQuery }) => {
         <>
           <h2>Film Details</h2>
           <Suspense fallback={"Loading..."}>
-            <FilmDetails />
+            <FilmDetails
+              preloadedQuery={preloadQuery<FilmDetails_filmQuery>(
+                environment,
+                FilmDetailsQuery,
+                { filmId: selectedFilm }
+              )}
+            />
           </Suspense>
         </>
       )}
