@@ -6,7 +6,7 @@ import * as serviceWorker from "./serviceWorker";
 import { RelayEnvironmentProvider } from "react-relay/hooks";
 import RelayEnvironment from "./RelayEnvironment";
 import FilmSelectorProvider from "./FilmSelector";
-import { FilterSpecieProvider } from "./FilmListFilter";
+import FilterSpecieProvider from "./SpeciesFilter";
 
 const { Suspense } = React;
 

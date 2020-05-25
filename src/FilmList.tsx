@@ -5,8 +5,8 @@ import { sortByReleaseDateDesc } from "./sorting";
 import { FilmList_films$key } from "./__generated__/FilmList_films.graphql";
 import Film from "./Film";
 import FilmListItem from "./FilmListItem";
-import { useFilterSpecieRead } from "./FilmListFilter";
 import { filmHasSpecie } from "./filtering";
+import { useFilterSpecieRead } from "./SpeciesFilter";
 
 const FilmList: FC<Props> = ({ filmRefs }) => {
   const films = useFragment(
