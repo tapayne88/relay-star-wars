@@ -6,6 +6,10 @@ import { useFilmSelectorRead } from "./FilmSelector";
 import Species from "./Species";
 import { isNotNullable } from "./filtering";
 import FilmDetailsReleaseDate from "./FilmDetailsReleaseDate";
+import Accordion from "./Accordion";
+import Planets from "./Planets";
+
+const { Suspense } = React;
 
 const FilmDetails: FC = () => {
   const selected = useFilmSelectorRead()!;
@@ -52,6 +56,12 @@ const FilmDetails: FC = () => {
       <FilmDetailsReleaseDate filmRef={film} />
 
       {species && <Species speciesRefs={species} />}
+
+      <Accordion header={<h3>Planets</h3>}>
+        <Suspense fallback={"Loading..."}>
+          <Planets />
+        </Suspense>
+      </Accordion>
     </dl>
   );
 };
