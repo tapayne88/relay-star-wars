@@ -18,7 +18,7 @@ const FilmListFilter: FC<Props> = ({ speciesRefs }) => {
   const setSpecie = useFilterSpecieWrite();
 
   return (
-    <>
+    <div>
       <h4>Filter Films by specie</h4>
       <select
         defaultValue=""
@@ -31,7 +31,7 @@ const FilmListFilter: FC<Props> = ({ speciesRefs }) => {
           </option>
         ))}
       </select>
-    </>
+    </div>
   );
 };
 

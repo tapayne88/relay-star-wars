@@ -7,6 +7,7 @@ import { RelayEnvironmentProvider } from "react-relay/hooks";
 import RelayEnvironment from "./RelayEnvironment";
 import FilmSelectorProvider from "./FilmSelector";
 import FilterSpecieProvider from "./SpeciesFilter";
+import FilmSortProvider from "./FilmSort";
 
 const { Suspense } = React;
 
@@ -15,9 +16,11 @@ ReactDOM.render(
     <RelayEnvironmentProvider environment={RelayEnvironment}>
       <FilmSelectorProvider>
         <FilterSpecieProvider>
-          <Suspense fallback={"Loading..."}>
-            <App preloadedQuery={preloadedQuery} />
-          </Suspense>
+          <FilmSortProvider>
+            <Suspense fallback={"Loading..."}>
+              <App preloadedQuery={preloadedQuery} />
+            </Suspense>
+          </FilmSortProvider>
         </FilterSpecieProvider>
       </FilmSelectorProvider>
     </RelayEnvironmentProvider>

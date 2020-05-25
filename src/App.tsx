@@ -8,10 +8,10 @@ import { useFilmSelectorRead } from "./FilmSelector";
 import FilmList from "./FilmList";
 import FilmEditor from "./FilmEditor";
 import FilmDetails from "./FilmDetails";
-import Accordion from "./Accordion";
 import { isNotNullable } from "./filtering";
 import FilmListFilter from "./FilmListFilter";
 import { FragmentRefs } from "relay-runtime";
+import FilmListSort from "./FilmListSort";
 
 const { Suspense } = React;
 
@@ -36,7 +36,10 @@ const App: FC<Props> = ({ preloadedQuery }) => {
   return (
     <>
       <h1>Star Wars GraphQL</h1>
-      <FilmListFilter speciesRefs={speciesRefs} />
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <FilmListFilter speciesRefs={speciesRefs} />
+        <FilmListSort />
+      </div>
       <div
         style={{
           margin: "0 20px",
