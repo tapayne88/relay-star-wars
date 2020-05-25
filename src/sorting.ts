@@ -8,7 +8,7 @@ export const sortByReleaseDateDesc = <T extends { releaseDate: string | null }>(
 ): readonly T[] =>
   sort((a, b) => parseDate(b.releaseDate) - parseDate(a.releaseDate), arr);
 
-const compareStrings = (a: string, b: string): number => {
+const compareStringsAsc = (a: string, b: string): number => {
   if (a === "" && b === "") {
     return 0;
   }
@@ -24,7 +24,7 @@ const compareStrings = (a: string, b: string): number => {
   const aFirst = a.charCodeAt(0);
   const bFirst = b.charCodeAt(0);
   if (aFirst === bFirst) {
-    return compareStrings(a.slice(1), b.slice(1));
+    return compareStringsAsc(a.slice(1), b.slice(1));
   }
 
   return aFirst - bFirst;
@@ -43,5 +43,5 @@ export const sortByNameAsc = <T extends { name: string | null }>(
     if (b.name === null) {
       return -1;
     }
-    return compareStrings(a.name, b.name);
+    return compareStringsAsc(a.name, b.name);
   }, arr);

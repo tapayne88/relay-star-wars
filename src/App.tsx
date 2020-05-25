@@ -47,11 +47,14 @@ const App: FC<Props> = ({ preloadedQuery }) => {
         <FilmList filmRefs={filmRefs} />
         <FilmEditor filmRefs={filmRefs} />
       </div>
-      <Accordion header={<h2>Film Details</h2>}>
-        <Suspense fallback={"Loading..."}>
-          {selectedFilm ? <FilmDetails /> : <>No film selected</>}
-        </Suspense>
-      </Accordion>
+      {selectedFilm && (
+        <>
+          <h2>Film Details</h2>
+          <Suspense fallback={"Loading..."}>
+            <FilmDetails />
+          </Suspense>
+        </>
+      )}
     </>
   );
 };
