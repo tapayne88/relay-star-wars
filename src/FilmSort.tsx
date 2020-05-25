@@ -1,20 +1,25 @@
 import React, { createContext, useState, useContext, FC } from "react";
 
 type ValuesOf<T> = T extends ReadonlyArray<infer U> ? U : never;
-export const filmSorts = ["title", "releaseDate"] as const;
+export const filmSorts = [
+  { key: "releaseDate", name: "Release Date" },
+  { key: "title", name: "Title" },
+] as const;
 export const defaultSort = filmSorts[0];
 
 export type FilmSortContext = ValuesOf<typeof filmSorts>;
+export type FilmSortContextWrite = FilmSortContext["key"];
 
 const FilmSortRead = createContext<FilmSortContext | undefined>(undefined);
 const FilmSortWrite = createContext<
-  ((sort: FilmSortContext) => void) | undefined
+  ((sort: FilmSortContextWrite) => void) | undefined
 >(undefined);
 
 const FilmSortProvider: FC = ({ children }) => {
   const [selected, setSelected] = useState<FilmSortContext>(defaultSort);
 
-  const setSort = (sort: FilmSortContext) => {
+  const setSort = (key: FilmSortContextWrite) => {
+    const sort = filmSorts.find((sort) => sort.key === key)!;
     setSelected(sort);
   };
 

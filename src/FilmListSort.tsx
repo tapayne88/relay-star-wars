@@ -3,7 +3,7 @@ import {
   useFilmSortWrite,
   filmSorts,
   defaultSort,
-  FilmSortContext,
+  FilmSortContextWrite,
 } from "./FilmSort";
 
 const FilmListSort: FC = () => {
@@ -13,12 +13,14 @@ const FilmListSort: FC = () => {
     <div>
       <h4>Sort Films</h4>
       <select
-        defaultValue={defaultSort}
-        onChange={(event) => setSort(event.target.value as FilmSortContext)}
+        defaultValue={defaultSort.key}
+        onChange={(event) =>
+          setSort(event.target.value as FilmSortContextWrite)
+        }
       >
-        {filmSorts.map((name) => (
-          <option key={name} value={name}>
-            {name}
+        {filmSorts.map((sort) => (
+          <option key={sort.key} value={sort.key}>
+            {sort.name}
           </option>
         ))}
       </select>

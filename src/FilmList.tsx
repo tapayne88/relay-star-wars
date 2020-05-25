@@ -30,7 +30,7 @@ const FilmList: FC<Props> = ({ filmRefs }) => {
     ? films.filter(filmHasSpecie(specieFilter))
     : films;
 
-  if (sort === "title") {
+  if (sort.key === "title") {
     return <FilmListByTitle filmRefs={filmList} />;
   }
 
