@@ -1,9 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App, { preloadedQuery } from "./App";
+import App from "./App";
+import AllFilms, {
+  App_AllFilmsQuery,
+} from "./__generated__/App_AllFilmsQuery.graphql";
 import * as serviceWorker from "./serviceWorker";
-import { RelayEnvironmentProvider } from "react-relay/hooks";
+import { RelayEnvironmentProvider, preloadQuery } from "react-relay/hooks";
 import RelayEnvironment from "./RelayEnvironment";
 import FilmSelectorProvider from "./FilmSelector";
 import FilterSpecieProvider from "./SpeciesFilter";
@@ -18,7 +21,13 @@ ReactDOM.render(
         <FilterSpecieProvider>
           <FilmSortProvider>
             <Suspense fallback={"Loading..."}>
-              <App preloadedQuery={preloadedQuery} />
+              <App
+                preloadedQuery={preloadQuery<App_AllFilmsQuery>(
+                  RelayEnvironment,
+                  AllFilms,
+                  {}
+                )}
+              />
             </Suspense>
           </FilmSortProvider>
         </FilterSpecieProvider>

@@ -1,22 +1,41 @@
 import React, { FC } from "react";
 import graphql from "babel-plugin-relay/macro";
-import { preloadQuery, usePreloadedQuery } from "react-relay/hooks";
+import { usePreloadedQuery } from "react-relay/hooks";
+import { FragmentRefs } from "relay-runtime";
 import { PreloadedQuery } from "react-relay/lib/relay-experimental/EntryPointTypes";
-import RelayEnvironment from "./RelayEnvironment";
 import { App_AllFilmsQuery } from "./__generated__/App_AllFilmsQuery.graphql";
 import { useFilmSelectorRead } from "./FilmSelector";
+import { isNotNullable } from "./filtering";
 import FilmList from "./FilmList";
 import FilmEditor from "./FilmEditor";
-import FilmDetails from "./FilmDetails";
-import { isNotNullable } from "./filtering";
 import FilmListFilter from "./FilmListFilter";
-import { FragmentRefs } from "relay-runtime";
 import FilmListSort from "./FilmListSort";
+
+const FilmDetails = React.lazy(() => import("./FilmDetails"));
 
 const { Suspense } = React;
 
 const App: FC<Props> = ({ preloadedQuery }) => {
-  const data = usePreloadedQuery(AllFilms, preloadedQuery);
+  const data = usePreloadedQuery(
+    graphql`
+      query App_AllFilmsQuery {
+        allFilms {
+          films {
+            id
+            ...FilmEditor_films
+            ...FilmList_films
+            speciesConnection {
+              species {
+                id
+                ...FilmListFilter_species
+              }
+            }
+          }
+        }
+      }
+    `,
+    preloadedQuery
+  );
   const selectedFilm = useFilmSelectorRead();
 
   const filmRefs = data.allFilms?.films?.filter(isNotNullable);
@@ -71,30 +90,5 @@ type SpecieRef = {
   " $fragmentRefs": FragmentRefs<"FilmListFilter_species">;
 };
 type SpeciesRef = ReadonlyArray<SpecieRef>;
-
-// Define a query
-const AllFilms = graphql`
-  query App_AllFilmsQuery {
-    allFilms {
-      films {
-        id
-        ...FilmEditor_films
-        ...FilmList_films
-        speciesConnection {
-          species {
-            id
-            ...FilmListFilter_species
-          }
-        }
-      }
-    }
-  }
-`;
-
-export const preloadedQuery = preloadQuery<App_AllFilmsQuery>(
-  RelayEnvironment,
-  AllFilms,
-  {}
-);
 
 export default App;
