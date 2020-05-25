@@ -27,7 +27,7 @@ const FilmEditor: FC<Props> = ({ filmRefs }) => {
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
-      <h2>Selected Film</h2>
+      <h2>Film Editor</h2>
 
       <label htmlFor="title">Title</label>
       <input name="title" defaultValue={title!} key={title!} ref={titleRef} />
@@ -47,11 +47,10 @@ const FilmEditor: FC<Props> = ({ filmRefs }) => {
             title: titleRef.current.value,
             releaseDate: releaseDateRef.current.value,
           };
-          console.log("committing update with", update);
           commitUpdate(update);
         }}
       >
-        Update!
+        Update
       </button>
     </div>
   );

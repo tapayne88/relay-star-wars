@@ -17,7 +17,6 @@ const { Suspense } = React;
 
 const App: FC<Props> = ({ preloadedQuery }) => {
   const data = usePreloadedQuery(AllFilms, preloadedQuery);
-  console.log(data);
 
   const filmRefs = data.allFilms?.films?.filter(isNotNullable);
 
@@ -32,7 +31,6 @@ const App: FC<Props> = ({ preloadedQuery }) => {
       ) || [];
     return [...collection, ...uniqueSpecies];
   }, [] as SpeciesRef);
-  console.log(speciesRefs);
 
   const first = filmRefs[0];
 

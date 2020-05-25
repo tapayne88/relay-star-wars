@@ -7,7 +7,6 @@ const FilmSelectorProvider: FC<Props> = ({ initialValue, children }) => {
   const [selected, setSelected] = useState(initialValue);
 
   const setFilm = (film: string) => {
-    console.log("selected film", film);
     setSelected(film);
   };
 

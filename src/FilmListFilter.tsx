@@ -13,7 +13,6 @@ export const FilterSpecieProvider: FC = ({ children }) => {
   const [selected, setSelected] = useState<string | null>(null);
 
   const setSpecie = (specie: string) => {
-    console.log(specie);
     specie !== "" ? setSelected(specie) : setSelected(null);
   };
 
