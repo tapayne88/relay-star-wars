@@ -23,6 +23,9 @@ const FilmDetails = React.lazy(() => import("./FilmDetails"));
 const { Suspense } = React;
 
 const App: FC<Props> = ({ preloadedQuery }) => {
+  console.group("<App />");
+  console.log("rendering");
+  console.groupEnd();
   const environment = useRelayEnvironment();
   const data = usePreloadedQuery(
     graphql`
