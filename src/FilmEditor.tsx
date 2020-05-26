@@ -13,6 +13,7 @@ const FilmEditor: FC<Props> = ({ filmRefs }) => {
         id
         title
         releaseDate
+        director
       }
     `,
     filmRefs
@@ -20,6 +21,7 @@ const FilmEditor: FC<Props> = ({ filmRefs }) => {
   const selected = useFilmSelectorRead();
   const titleRef = useRef<HTMLInputElement>(null!);
   const releaseDateRef = useRef<HTMLInputElement>(null!);
+  const directorRef = useRef<HTMLInputElement>(null!);
 
   const film = films.find(({ id }) => id === selected)!;
 
@@ -47,12 +49,21 @@ const FilmEditor: FC<Props> = ({ filmRefs }) => {
             ref={releaseDateRef}
           />
 
+          <label htmlFor="releaseDate">Release Date</label>
+          <input
+            name="director"
+            defaultValue={film.director!}
+            key={film.director!}
+            ref={directorRef}
+          />
+
           <button
             onClick={() => {
               const update = {
                 id: film.id,
                 title: titleRef.current.value,
                 releaseDate: releaseDateRef.current.value,
+                director: directorRef.current.value,
               };
               commitUpdate(update);
             }}
@@ -73,10 +84,12 @@ const commitUpdate = ({
   id,
   title,
   releaseDate,
+  director,
 }: {
   id: string;
   title: string;
   releaseDate: string;
+  director: string;
 }) =>
   commitLocalUpdate(RelayEnvironment, (store) => {
     const filmRecord = store.get(id);
@@ -85,6 +98,7 @@ const commitUpdate = ({
 
     filmRecord.setValue(title, "title");
     filmRecord.setValue(releaseDate, "releaseDate");
+    filmRecord.setValue(director, "director");
   });
 
 export default FilmEditor;
