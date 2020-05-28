@@ -1,44 +1,41 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Star Wars API (SWAPI) via GraphQL with Relay
 
-## Available Scripts
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). Usual instructions apply.
 
-In the project directory, you can run:
+## Getting Started
 
-### `yarn start`
+### Setup SWAPI
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+You need a local version of [SWAPI](https://github.com/graphql/swapi-graphql) running on port `8081` (the [live version](https://graphql.org/swapi-graphql/) doesn't have CORS headers).
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+As of writing there is a bug in SWAPI (see issue [#137](https://github.com/graphql/swapi-graphql/issues/137) and PR [#176](https://github.com/graphql/swapi-graphql/pull/176)). If the PR hasn't been merged use the repo / branch from PR (see instructions below).
 
-### `yarn test`
+```shell
+# Clone fork of SWAPI
+git clone git@github.com:tapayne88/swapi-graphql.git
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+# Checkout fixed branch
+git checkout local-cache-entry-fix
 
-### `yarn build`
+# Install dependencies, this will also try run build-lambda and will likely fail - don't worry
+yarn install
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Start server on port 8081
+PORT=8081 yarn start
+```
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+### Setup App
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```shell
+# Install dependencies
+yarn install
 
-### `yarn eject`
+# Fetch GraphQL schema from deployed SWAPI
+yarn relay:fetch_schema
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+# Generate relay query / fragment files
+yarn relay
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Start create-react-app
+yarn start
+```
