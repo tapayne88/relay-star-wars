@@ -4,6 +4,7 @@ type ValuesOf<T> = T extends ReadonlyArray<infer U> ? U : never;
 export const filmSorts = [
   { key: "releaseDate", name: "Release Date" },
   { key: "title", name: "Title" },
+  { key: "director", name: "Director" },
 ] as const;
 export const defaultSort = filmSorts[0];
 

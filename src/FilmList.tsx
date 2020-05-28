@@ -5,6 +5,7 @@ import { FilmList_films$key } from "./__generated__/FilmList_films.graphql";
 import { filmHasSpecie } from "./filtering";
 import { useFilterSpecieRead } from "./SpeciesFilter";
 import FilmListByTitle from "./FilmListByTitle";
+import FilmListByDirector from "./FilmListByDirector";
 import FilmListByReleaseDate from "./FilmListByReleaseDate";
 import { useFilmSortRead } from "./FilmSort";
 
@@ -13,6 +14,7 @@ const FilmList: FC<Props> = ({ filmRefs }) => {
     graphql`
       fragment FilmList_films on Film @relay(plural: true) {
         ...FilmListByTitle_films
+        ...FilmListByDirector_films
         ...FilmListByReleaseDate_films
         speciesConnection {
           species {
@@ -32,6 +34,10 @@ const FilmList: FC<Props> = ({ filmRefs }) => {
 
   if (sort.key === "title") {
     return <FilmListByTitle filmRefs={filmList} />;
+  }
+
+  if (sort.key === "director") {
+    return <FilmListByDirector filmRefs={filmList} />;
   }
 
   return <FilmListByReleaseDate filmRefs={filmList} />;
