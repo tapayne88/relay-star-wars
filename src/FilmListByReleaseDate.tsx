@@ -22,7 +22,7 @@ const FilmListByReleaseDate: FC<Props> = ({ filmRefs }) => {
     <ul>
       {sortByReleaseDateDesc(films).map((film) => (
         <FilmListItem key={film.id} id={film.id}>
-          <Film filmRef={film} />
+          <Film film={film} />
         </FilmListItem>
       ))}
     </ul>

@@ -22,7 +22,7 @@ const FilmListByDirector: FC<Props> = ({ filmRefs }) => {
     <ul>
       {sortByDirectorAsc(films).map((film) => (
         <FilmListItem key={film.id} id={film.id}>
-          <Film filmRef={film} />
+          <Film film={film} />
         </FilmListItem>
       ))}
     </ul>
