@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Fragment Container 1`] = `
+<div>
+  &lt;mock-value-for-field-"releaseDate"&gt;
+   
+  <strong>
+    &lt;mock-value-for-field-"title"&gt;
+  </strong>
+</div>
+`;
