@@ -12,12 +12,24 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject",
     "prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,md,json}\"",
     "relay:fetch_schema": "curl --location --output data/schema.graphql https://raw.githubusercontent.com/graphql/swapi-graphql/master/schema.graphql",
     "relay": "relay-compiler --src ./src --schema data/schema.graphql --language typescript",
     "tsc": "tsc --noEmit"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "transform": {
+      "^.+\\.(js|jsx|mjs|cjs|ts|tsx)$": "react-scripts/config/jest/babelTransform.js"
+    },
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/__generated__/"
+    ]
   },
   "eslintConfig": {
     "extends": "react-app"
