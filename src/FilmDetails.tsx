@@ -10,6 +10,7 @@ import { useFilmSelectorRead } from "./FilmSelector";
 import Species from "./Species";
 import { isNotNullable } from "./filtering";
 import FilmDetailsReleaseDate from "./FilmDetailsReleaseDate";
+import PreloadAccordion from "./PreloadAccordion";
 import Accordion from "./Accordion";
 import preloadPlanets, {
   Planets_filmPlanetsQuery,
@@ -17,6 +18,7 @@ import preloadPlanets, {
 import { PreloadedQuery } from "react-relay/lib/relay-experimental/EntryPointTypes";
 
 const Planets = React.lazy(() => import("./Planets"));
+const Vehicles = React.lazy(() => import("./Vehicles"));
 
 const { Suspense } = React;
 
@@ -66,22 +68,28 @@ const FilmDetails: FC<Props> = ({ preloadedQuery }) => {
 
       <FilmDetailsReleaseDate filmRef={film} />
 
-      {species && <Species speciesRefs={species} />}
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        {species && <Species speciesRefs={species} />}
 
-      <Accordion<Planets_filmPlanetsQuery>
-        prepare={() =>
-          preloadQuery(environment, preloadPlanets, { filmId: selected })
-        }
-        header={<h3>Planets</h3>}
-      >
-        {(preloadedQuery) => (
-          <>
+        <PreloadAccordion<Planets_filmPlanetsQuery>
+          prepare={() =>
+            preloadQuery(environment, preloadPlanets, { filmId: selected })
+          }
+          header={<h3>Planets</h3>}
+        >
+          {(preloadedQuery) => (
             <Suspense fallback={"Loading..."}>
               <Planets preloadedQuery={preloadedQuery} />
             </Suspense>
-          </>
-        )}
-      </Accordion>
+          )}
+        </PreloadAccordion>
+
+        <Accordion header={<h3>Vehicles</h3>}>
+          <Suspense fallback={"Loading..."}>
+            <Vehicles filmId={selected} />
+          </Suspense>
+        </Accordion>
+      </div>
     </dl>
   );
 };

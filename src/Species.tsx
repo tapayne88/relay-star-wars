@@ -16,14 +16,14 @@ const Species: FC<Props> = ({ speciesRefs }) => {
   );
 
   return (
-    <>
+    <div>
       <h3>Species</h3>
       <ul>
         {sortByNameAsc(species).map(({ id, name }) => (
           <li key={id}>{name}</li>
         ))}
       </ul>
-    </>
+    </div>
   );
 };
 
