@@ -23,7 +23,7 @@ const fetchRelay: FetchFunction = async (operation, variables) => {
     `fetching query ${operation.name} with ${JSON.stringify(variables)}`
   );
 
-  return fetchGraphQL(operation.text, variables).then((data) => {
+  return fetchGraphQL(operation, variables).then((data) => {
     if (operation.operationKind !== "mutation") {
       cache.set(queryID, variables, data);
     }
