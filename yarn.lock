@@ -12186,6 +12186,7 @@ fsevents@^1.2.7:
     relay-config: ^9.1.0
     relay-runtime: ^9.1.0
     relay-test-utils: ^9.1.0
+    scheduler: ^0.20.1
     typescript: ^3.9.3
   languageName: unknown
   linkType: soft
@@ -12661,6 +12662,16 @@ resolve@1.15.0:
     loose-envify: ^1.1.0
     object-assign: ^4.1.1
   checksum: 804f990b9f370cca6d42b65f3cba2cc2bfed4973ee5623bed1ea36a6627842db8c891e2e5ac003f06f9ee892d1d3396921e27fa077346caf0213af05776e8dee
+  languageName: node
+  linkType: hard
+
+"scheduler@npm:^0.20.1":
+  version: 0.20.1
+  resolution: "scheduler@npm:0.20.1"
+  dependencies:
+    loose-envify: ^1.1.0
+    object-assign: ^4.1.1
+  checksum: 377b4ad0d8313c4548bac7374bc38409e9d142799979ce396787efa04d1bcabf2591540f243f2131e3df8e56e7f5b29c5415248523e88ecb60f13a32db2e076f
   languageName: node
   linkType: hard
 
