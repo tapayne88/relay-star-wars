@@ -24,3 +24,11 @@ yarn-error.log*
 
 # Should always download schema
 data/schema.graphql
+
+# Yarn v2 files
+.yarn/*
+!.yarn/cache
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
